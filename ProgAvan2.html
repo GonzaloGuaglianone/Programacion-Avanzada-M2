@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repaso Interactivo: Repositorios, Swing, MVC y Proyecto Integrado (Java)</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #2563eb;
+            --accent: #dc2626;
+            --success: #16a34a;
+            --bg-light: #f8fafc;
+            --text-color: #1e293b;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 0;
+            color: #93c5fd;
+            font-size: 1.1rem;
+        }
+
+        .tabs-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .tab-buttons {
+            display: flex;
+            background-color: #e2e8f0;
+            overflow-x: auto;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background-color: transparent;
+            border: none;
+            padding: 1rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .tab-btn:hover {
+            background-color: #cbd5e1;
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background-color: white;
+            color: var(--secondary);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2.5rem;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin-top: 1.5rem;
+        }
+
+        .box {
+            background: var(--bg-light);
+            border-left: 4px solid var(--secondary);
+            padding: 1.2rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .box-exercise {
+            border-left-color: var(--accent);
+            background: #fff5f5;
+        }
+
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .solution-container {
+            margin-top: 1rem;
+        }
+
+        .solution-btn {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-weight: 600;
+        }
+
+        .solution-btn:hover {
+            background-color: #15803d;
+        }
+
+        .solution-content {
+            display: none;
+            margin-top: 1rem;
+            border: 2px dashed var(--success);
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f0fdf4;
+        }
+
+        .solution-content.show {
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Programación Avanzada</h1>
+    <p>Módulo 2: Repositorios en Listas, Java Swing, MVC y Proyecto Integrado</p>
+</header>
+
+<div class="tabs-container">
+    <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'tab1')">1. Repositorios y Listas</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab2')">2. Java Swing (JFrame)</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab3')">3. Patrón MVC</button>
+        <button class="tab-btn" onclick="openTab(event, 'tab4')">4. Proyecto Integrado</button>
+    </div>
+
+    <!-- PESTAÑA 1 -->
+    <div id="tab1" class="tab-content active">
+        <h2>Unidad 1: Repositorios y Listas en Java</h2>
+        <div class="box">
+            <h3>Concepto</h3>
+            <p>Un <strong>Repositorio</strong> es una clase encargada de gestionar una colección de objetos (como una base de datos en memoria). Utiliza estructuras de datos de Java como <code>ArrayList</code> para permitir operaciones fundamentales: <em>Guardar (Insertar), Listar (Consultar), Buscar y Eliminar</em> objetos de una clase específica.</p>
+        </div>
+        <div class="box">
+            <h3>Ejemplo práctico en Java</h3>
+            <pre><code>import java.util.ArrayList;
+import java.util.List;
+
+class Producto {
+    String nombre;
+    double precio;
+    public Producto(String nombre, double precio) {
+        this.nombre = nombre; this.precio = precio;
+    }
+}
+
+public class ProductoRepositorio {
+    private List&lt;Producto&gt; lista = new ArrayList&lt;&gt;();
+
+    public void guardar(Producto p) {
+        lista.add(p);
+        System.out.println("Producto guardado: " + p.nombre);
+    }
+
+    public void listar() {
+        for (Producto p : lista) {
+            System.out.println("- " + p.nombre + " ($" + p.precio + ")");
+        }
+    }
+}</code></pre>
+        </div>
+        <div class="box box-exercise">
+            <h3>Ejercicio Práctico</h3>
+            <p>Crea una clase <code>Estudiante</code> con atributos <code>String nombre</code> y <code>int cedula</code>. Luego, crea un repositorio llamado <code>EstudianteRepositorio</code> que contenga un <code>ArrayList&lt;Estudiante&gt;</code> y métodos para <code>guardar(Estudiante e)</code> y <code>listarEstudiantes()</code>.</p>
+        </div>
+        <div class="solution-container">
+            <button class="solution-btn" onclick="toggleSolution('sol1')">Ver Solución</button>
+            <div id="sol1" class="solution-content">
+                <h4>Solución sugerida:</h4>
+                <pre><code>import java.util.ArrayList;
+import java.util.List;
+
+class Estudiante {
+    String nombre;
+    int cedula;
+    public Estudiante(String nombre, int cedula) {
+        this.nombre = nombre;
+        this.cedula = cedula;
+    }
+}
+
+public class EstudianteRepositorio {
+    private List&lt;Estudiante&gt; repositorio = new ArrayList&lt;&gt;();
+
+    public void guardar(Estudiante e) {
+        repositorio.add(e);
+        System.out.println("Estudiante guardado: " + e.nombre);
+    }
+
+    public void listarEstudiantes() {
+        for (Estudiante e : repositorio) {
+            System.out.println("Cédula: " + e.cedula + " | Nombre: " + e.nombre);
+        }
+    }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 2 -->
+    <div id="tab2" class="tab-content">
+        <h2>Unidad 2: Interfaces Gráficas con Java Swing (JFrame)</h2>
+        <div class="box">
+            <h3>Concepto</h3>
+            <p><strong>Java Swing</strong> es la librería gráfica estándar para construir aplicaciones de escritorio. Un <code>JFrame</code> representa la ventana principal de la aplicación. Sobre ella se pueden añadir componentes útiles como <code>JLabel</code> (textos), <code>JTextField</code> (campos de texto), <code>JButton</code> (botones) y <code>JTextArea</code> para mostrar información.</p>
+        </div>
+        <div class="box">
+            <h3>Ejemplo práctico en Java</h3>
+            <pre><code>import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class VentanaEjemplo extends JFrame {
+    public VentanaEjemplo() {
+        setTitle("Mi Ventana Swing");
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+
+        JLabel lbl = new JLabel("Escribe algo:");
+        lbl.setBounds(20, 20, 100, 25);
+        add(lbl);
+
+        JTextField txt = new JTextField();
+        txt.setBounds(20, 50, 200, 25);
+        add(txt);
+
+        JButton btn = new JButton("Saludar");
+        btn.setBounds(20, 90, 100, 30);
+        add(btn);
+
+        btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Hola, " + txt.getText());
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        new VentanaEjemplo().setVisible(true);
+    }
+}</code></pre>
+        </div>
+        <div class="box box-exercise">
+            <h3>Ejercicio Práctico</h3>
+            <p>Crea un <code>JFrame</code> que contenga un <code>JTextField</code> para ingresar un número, un <code>JButton</code> con el texto "Doble" y un <code>JLabel</code> de resultado. Al hacer clic en el botón, el programa debe calcular el doble del número ingresado y mostrarlo en el label.</p>
+        </div>
+        <div class="solution-container">
+            <button class="solution-btn" onclick="toggleSolution('sol2')">Ver Solución</button>
+            <div id="sol2" class="solution-content">
+                <h4>Solución sugerida:</h4>
+                <pre><code>import javax.swing.*;
+
+public class VentanaDoble extends JFrame {
+    public VentanaDoble() {
+        setTitle("Calcular Doble");
+        setSize(250, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+
+        JTextField txtNumero = new JTextField();
+        txtNumero.setBounds(30, 30, 160, 25);
+        add(txtNumero);
+
+        JButton btnCalcular = new JButton("Doble");
+        btnCalcular.setBounds(30, 70, 100, 30);
+        add(btnCalcular);
+
+        JLabel lblResultado = new JLabel("Resultado: ");
+        lblResultado.setBounds(30, 110, 180, 25);
+        add(lblResultado);
+
+        btnCalcular.addActionListener(e -&gt; {
+            try {
+                int num = Integer.parseInt(txtNumero.getText());
+                int doble = num * 2;
+                lblResultado.setText("Resultado: " + doble);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Ingrese un número válido.");
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        new VentanaDoble().setVisible(true);
+    }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 3 -->
+    <div id="tab3" class="tab-content">
+        <h2>Unidad 3: Patrón de Arquitectura MVC (Modelo - Vista - Controlador)</h2>
+        <div class="box">
+            <h3>Concepto</h3>
+            <p>El patrón <strong>MVC</strong> separa las responsabilidades de una aplicación en tres partes:<br>
+            - <strong>Modelo (Model):</strong> Contiene los datos y la lógica de negocio (clases y repositorios).<br>
+            - <strong>Vista (View):</strong> La interfaz gráfica de usuario (componentes Swing y JFrame).<br>
+            - <strong>Controlador (Controller):</strong> El intermediario que escucha a la Vista, actualiza el Modelo y refresca la pantalla.</p>
+        </div>
+        <div class="box">
+            <h3>Ejemplo conceptual de integración MVC</h3>
+            <pre><code>class TareaModelo {
+    private String descripcion;
+    public void setDescripcion(String d) { this.descripcion = d; }
+    public String getDescripcion() { return descripcion; }
+}
+
+class TareaControlador {
+    private TareaModelo modelo;
+    public TareaControlador(TareaModelo modelo) {
+        this.modelo = modelo;
+    }
+    public void actualizarTarea(String texto) {
+        modelo.setDescripcion(texto);
+    }
+}</code></pre>
+        </div>
+        <div class="box box-exercise">
+            <h3>Ejercicio Práctico</h3>
+            <p>Explica con tus palabras cómo interactúan la Vista (un botón en Swing) y el Controlador cuando un usuario registra un nuevo elemento en el sistema.</p>
+        </div>
+        <div class="solution-container">
+            <button class="solution-btn" onclick="toggleSolution('sol3')">Ver Solución</button>
+            <div id="sol3" class="solution-content">
+                <h4>Solución sugerida:</h4>
+                <p><strong>Flujo paso a paso:</strong><br>
+                1. El usuario escribe los datos en la <strong>Vista</strong> y hace clic en el botón.<br>
+                2. El botón avisa al <strong>Controlador</strong> a través de un evento.<br>
+                3. El <strong>Controlador</strong> procesa la información y se la envía al <strong>Modelo</strong> (Repositorio) para que la guarde en la lista.<br>
+                4. El <strong>Controlador</strong> actualiza la <strong>Vista</strong> para reflejar los cambios.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PESTAÑA 4 -->
+    <div id="tab4" class="tab-content">
+        <h2>Unidad 4: Proyecto Integrado</h2>
+        <div class="box">
+            <h3>Concepto</h3>
+            <p>Unimos todo lo aprendido: una clase de datos, un repositorio con lista en memoria, una interfaz gráfica en Swing y la arquitectura MVC trabajando juntas.</p>
+        </div>
+        <div class="box">
+            <h3>Ejemplo de Proyecto Integrado en Swing</h3>
+            <pre><code>import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
+class Cliente {
+    String nombre;
+    public Cliente(String nombre) { this.nombre = nombre; }
+}
+
+class ClienteRepo {
+    private List&lt;Cliente&gt; clientes = new ArrayList&lt;&gt;();
+    public void agregar(Cliente c) { clientes.add(c); }
+    public List&lt;Cliente&gt; obtenerTodos() { return clientes; }
+}
+
+public class AppClienteView extends JFrame {
+    private ClienteRepo repo = new ClienteRepo();
+    public AppClienteView() {
+        setTitle("Gestor Integrado");
+        setSize(300, 250); setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); setLayout(null);
+        JTextField txt = new JTextField(); txt.setBounds(20, 20, 200, 25); add(txt);
+        JButton btn = new JButton("Guardar"); btn.setBounds(20, 60, 100, 30); add(btn);
+        JTextArea area = new JTextArea(); area.setBounds(20, 100, 230, 80); add(area);
+
+        btn.addActionListener(e -&gt; {
+            repo.agregar(new Cliente(txt.getText()));
+            area.setText("");
+            for(Cliente cli : repo.obtenerTodos()) {
+                area.append("- " + cli.nombre + "\n");
+            }
+            txt.setText("");
+        });
+    }
+    public static void main(String[] args) { new AppClienteView().setVisible(true); }
+}</code></pre>
+        </div>
+        <div class="box box-exercise">
+            <h3>Ejercicio Práctico Final</h3>
+            <p>Modifica el código integrado para que la clase <code>Cliente</code> tenga también un atributo <code>email</code>, y que al registrarlo se muestre el nombre y el correo en el <code>JTextArea</code>.</p>
+        </div>
+        <div class="solution-container">
+            <button class="solution-btn" onclick="toggleSolution('sol4')">Ver Solución</button>
+            <div id="sol4" class="solution-content">
+                <h4>Solución sugerida:</h4>
+                <pre><code>import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+
+class ClienteExt {
+    String nombre, email;
+    public ClienteExt(String nombre, String email) {
+        this.nombre = nombre; this.email = email;
+    }
+}
+
+class RepoExt {
+    private List&lt;ClienteExt&gt; lista = new ArrayList&lt;&gt;();
+    public void agregar(ClienteExt c) { lista.add(c); }
+    public List&lt;ClienteExt&gt; getLista() { return lista; }
+}
+
+public class AppFinal extends JFrame {
+    private RepoExt repo = new RepoExt();
+    public AppFinal() {
+        setTitle("Gestor Completo"); setSize(350, 300); setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); setLayout(null);
+        JTextField txtNombre = new JTextField(); txtNombre.setBounds(20, 20, 200, 25); add(txtNombre);
+        JTextField txtEmail = new JTextField(); txtEmail.setBounds(20, 55, 200, 25); add(txtEmail);
+        JButton btn = new JButton("Registrar"); btn.setBounds(20, 90, 100, 30); add(btn);
+        JTextArea area = new JTextArea(); area.setBounds(20, 135, 280, 100); add(area);
+
+        btn.addActionListener(e -&gt; {
+            repo.agregar(new ClienteExt(txtNombre.getText(), txtEmail.getText()));
+            area.setText("");
+            for(ClienteExt c : repo.getLista()) {
+                area.append(c.nombre + " (" + c.email + ")\n");
+            }
+            txtNombre.setText(""); txtEmail.setText("");
+        });
+    }
+    public static void main(String[] args) { new AppFinal().setVisible(true); }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    Herramienta de Apoyo Académico Autónomo — Programación Avanzada (Módulo 2)
+</footer>
+
+<script>
+    function openTab(evt, tabId) {
+        const contents = document.querySelectorAll('.tab-content');
+        contents.forEach(c => c.classList.remove('active'));
+
+        const buttons = document.querySelectorAll('.tab-btn');
+        buttons.forEach(b => b.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+
+    function toggleSolution(solId) {
+        const solContent = document.getElementById(solId);
+        solContent.classList.toggle('show');
+    }
+</script>
+
+</body>
+</html>
